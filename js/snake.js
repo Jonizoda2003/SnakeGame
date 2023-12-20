@@ -11,8 +11,8 @@ let box = 32;
 
 let score = 0;
 
-let startSpeed = 200;
-let currentSpeed = startSpeed;
+let startSpeed=200;
+let currentSpeed=startSpeed;
 
 let food = {
   x: Math.floor(Math.random() * 17 + 1) * box,
@@ -27,6 +27,7 @@ snake[0] = {
 
 let snakeX = snake[0].x;
 let snakeY = snake[0].y;
+
 document.addEventListener("keydown", direction);
 
 let dir;
@@ -44,22 +45,25 @@ function eatTail(head, arr) {
   }
 }
 
+function drawGame() {
+  ctx.drawImage(ground, 0, 0);
+  ctx.drawImage(foodImg, food.x, food.y);
+  for (let i = 0; i < snake.length; i++) {
+    ctx.fillStyle = i == 0 ? "green" : "red";
+    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+  }
   ctx.fillStyle = "white";
   ctx.font = "50px Arial";
   ctx.fillText(score, box * 2.5, box * 1.7);
-  ctx.fillText(
-    "Speed " + (1000 / currentSpeed).toFixed(1),
-    box * 10.5,
-    box * 1.7
-  );
+  ctx.fillText('Speed ' + (1000/currentSpeed).toFixed(1), box * 13.5, box * 1.7);
 
   if (snakeX == food.x && snakeY == food.y) {
     score++;
-    if (currentSpeed >= startSpeed * 0.3) {
-      currentSpeed -= startSpeed * 0.02;
+    if (currentSpeed>=startSpeed*0.3) {
+      currentSpeed-=(startSpeed*0.02);
       clearInterval(game);
-      game = setInterval(drawGame, currentSpeed);
-    }
+      game=setInterval(drawGame,currentSpeed);
+      }
     food = {
       x: Math.floor(Math.random() * 17 + 1) * box,
       y: Math.floor(Math.random() * 15 + 3) * box,
@@ -73,12 +77,11 @@ function eatTail(head, arr) {
     snakeX > box * 17 ||
     snakeY < 3 * box ||
     snakeY > box * 17
-  )
-   {
+  ) {
     clearInterval(game);
-
     gameOver();
   }
+
   if (dir == "left") snakeX -= box;
   if (dir == "right") snakeX += box;
   if (dir == "up") snakeY -= box;
@@ -92,7 +95,7 @@ function eatTail(head, arr) {
   eatTail(newHead, snake);
 
   snake.unshift(newHead);
-
+}
 function gameOver() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -107,7 +110,7 @@ function gameOver() {
 
 function restartGame(event) {
   if (event.keyCode == 13) {
-    currentSpeed = startSpeed;
+    currentSpeed=startSpeed;
     location.reload();
   }
 }
